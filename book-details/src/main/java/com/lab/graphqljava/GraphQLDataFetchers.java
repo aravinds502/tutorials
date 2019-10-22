@@ -1,4 +1,4 @@
-package com.graphqljava.tutorial.bookdetails;
+package com.lab.graphqljava;
 
 import com.google.common.collect.ImmutableMap;
 import graphql.schema.DataFetcher;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class GraphQLDataFetchers {
@@ -37,7 +38,14 @@ public class GraphQLDataFetchers {
                     "firstName", "Anne",
                     "lastName", "Rice")
     );
-
+    
+    public DataFetcher getBooksDataFetcher() {
+        return dataFetchingEnvironment -> {
+            return books
+                    .stream()
+                    .collect(Collectors.toList());
+        };
+    }
     public DataFetcher getBookByIdDataFetcher() {
         return dataFetchingEnvironment -> {
             String bookId = dataFetchingEnvironment.getArgument("id");
